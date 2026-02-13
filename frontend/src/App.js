@@ -8,6 +8,8 @@ import VolunteerDashboard from "./pages/volunteer/VolunteerDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SplashScreen from "./pages/SplashScreen";
+import Feed from "./pages/Feed";
+
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +48,9 @@ function App() {
           <ProtectedRoute allowedRole="admin">
             <AdminDashboard />
           </ProtectedRoute>}/>
+
+      <Route path="/feed" element={<Feed />} />
+
         
 </Routes>
 

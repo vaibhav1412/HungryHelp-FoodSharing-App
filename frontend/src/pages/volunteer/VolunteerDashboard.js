@@ -1,14 +1,20 @@
+import Layout from "../../components/Layout";
+import StatsCard from "../../components/StatsCard";
+
 function VolunteerDashboard() {
   return (
-    <div className="container mt-4">
-      <h2>Volunteer Dashboard</h2>
+    <Layout>
+      <h2 className="mb-4">Volunteer Dashboard</h2>
 
-      <div className="card p-3 mt-3">
-        <h5>Food Request</h5>
-        <p>10 people need food near XYZ area</p>
-        <button className="btn btn-primary">Accept</button>
+      <div className="row g-4">
+        <div className="col-md-4">
+          <StatsCard title="Available Requests" value="7" color="info" />
+        </div>
+        <div className="col-md-4">
+          <StatsCard title="Accepted Tasks" value="2" color="success" />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

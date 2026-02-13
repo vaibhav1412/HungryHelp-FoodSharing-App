@@ -1,16 +1,23 @@
+import Layout from "../../components/Layout";
+import StatsCard from "../../components/StatsCard";
+
 function DonorDashboard() {
   return (
-    <div className="container mt-4">
-      <h2>Donor Dashboard</h2>
+    <Layout>
+      <h2 className="mb-4">Donor Dashboard</h2>
 
-      <div className="d-flex flex-column mt-3">
-        <h4>Hello</h4>
-        <button className="btn btn-success mt-2">
-          Click Me
-        </button>
+      <div className="row g-4">
+        <div className="col-md-4">
+          <StatsCard title="Total Donations" value="12" color="success" />
+        </div>
+        <div className="col-md-4">
+          <StatsCard title="Pending Pickups" value="3" color="warning" />
+        </div>
+        <div className="col-md-4">
+          <StatsCard title="Completed" value="9" color="primary" />
+        </div>
       </div>
-
-    </div>
+    </Layout>
   );
 }
 
