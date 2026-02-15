@@ -22,7 +22,15 @@ function Login() {
       role
     };
 
-    localStorage.setItem("user", JSON.stringify(userData));
+  localStorage.setItem(
+  "user",
+  JSON.stringify({
+    email: formData.email,
+    activeRole: formData.role,
+    roles: ["donor", "reporter", "volunteer"]
+  })
+);
+
 
     // Navigate based on role
     navigate(`/${role}`);

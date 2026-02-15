@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import Layout from "../../components/Layout";
 import { FeedContext } from "../../context/FeedContext";
 
 function ReporterDashboard() {
@@ -7,26 +6,36 @@ function ReporterDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
   const [image, setImage] = useState(null);
 
   const handleSubmit = () => {
-    if (!description) return alert("Description required");
+    if (!description || !location) {
+      alert("All fields required");
+      return;
+    }
 
     addPost({
       id: Date.now(),
       description,
+      location,
       image,
       reporter: user.email,
-      status: "open"
+      donor: null,
+      volunteer: null,
+      volunteerRequired: false,
+      completionImage: null,
+      status: "OPEN"
     });
 
     setDescription("");
+    setLocation("");
     setImage(null);
   };
 
   return (
-    <Layout>
-      <h2 className="mb-4">Reporter Dashboard</h2>
+    <div className="container mt-4">
+      <h2>Reporter Section</h2>
 
       <div className="card p-4 shadow-sm">
 
@@ -38,6 +47,14 @@ function ReporterDashboard() {
           }
         />
 
+        <input
+          type="text"
+          placeholder="Enter Location"
+          className="form-control mb-3"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+
         <textarea
           className="form-control mb-3"
           placeholder="Describe food need..."
@@ -45,12 +62,15 @@ function ReporterDashboard() {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        <button className="btn btn-primary" onClick={handleSubmit}>
+        <button
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
           Post Request
         </button>
 
       </div>
-    </Layout>
+    </div>
   );
 }
 

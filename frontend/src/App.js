@@ -1,60 +1,44 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
+import SplashScreen from "./pages/SplashScreen";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import DonorDashboard from "./pages/donor/DonorDashboard";
-import ReporterDashboard from "./pages/reporter/ReporterDashboard";
-import VolunteerDashboard from "./pages/volunteer/VolunteerDashboard";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
-import SplashScreen from "./pages/SplashScreen";
+import DashboardRouter from "./pages/DashboardRouter";
 import Feed from "./pages/Feed";
+import HomeFeed from "./pages/HomeFeed";
+import Leaderboard from "./pages/Leaderboard";
+import Profile from "./pages/Profile";
+
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+
   return (
     <BrowserRouter>
-      <Navbar />
+      {user && <Navbar />}
+
       <Routes>
         <Route path="/" element={<SplashScreen />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
-      <Route
-        path="/donor"
-        element={
-          <ProtectedRoute allowedRole="donor">
-            <DonorDashboard />
-          </ProtectedRoute>
-        }
-      />
 
-      <Route
-        path="/reporter"
-        element={
-          <ProtectedRoute allowedRole="reporter">
-            <ReporterDashboard />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/dashboard"
+          element={user ? <DashboardRouter /> : <Navigate to="/login" />}
+        />
 
-      <Route
-        path="/volunteer"element=
-        {<ProtectedRoute allowedRole="volunteer">
-          <VolunteerDashboard /></ProtectedRoute>}/>
-        
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRole="admin">
-            <AdminDashboard />
-          </ProtectedRoute>}/>
+        <Route
+          path="/feed"
+          element={user ? <Feed /> : <Navigate to="/login" />} 
+        />
+        <Route path="/home" element={<HomeFeed />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/profile" element={<Profile />} />
 
-      <Route path="/feed" element={<Feed />} />
 
-        
-</Routes>
-
-</BrowserRouter>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

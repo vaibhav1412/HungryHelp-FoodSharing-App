@@ -1,34 +1,65 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 function Register() {
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
 
-  const handleRegister = (role) => {
-    // Temporary navigation (backend later)
-    navigate(`/${role}`);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      alert("All fields required");
+      return;
+    }
+
+    alert("Account created successfully!");
+
+    window.location.href = "/login";
   };
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">HungryHelp Register</h2>
+      <div className="card p-4 shadow mx-auto" style={{ maxWidth: "400px" }}>
+        <h3 className="mb-3 text-center">Create Account</h3>
 
-      <div className="card p-4 shadow">
-        <input className="form-control mb-2" placeholder="Full Name" />
-        <input className="form-control mb-2" placeholder="Email" />
-        <input type="password" className="form-control mb-3" placeholder="Password" />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            className="form-control mb-3"
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+          />
 
-        <button onClick={() => handleRegister("donor")} className="btn btn-success mb-2">
-          Register as Donor
-        </button>
+          <input
+            type="password"
+            placeholder="Password"
+            className="form-control mb-3"
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+          />
 
-        <button onClick={() => handleRegister("reporter")} className="btn btn-primary mb-2">
-          Register as Reporter
-        </button>
+          <button className="btn btn-primary w-100">
+            Register
+          </button>
+        </form>
 
-        <button onClick={() => handleRegister("volunteer")} className="btn btn-warning mb-2">
-          Register as Volunteer
-        </button>
+        {/* Login Link */}
+        <div className="text-center mt-3">
+          <small>
+            Already have an account?{" "}
+            <span
+              style={{ color: "blue", cursor: "pointer" }}
+              onClick={() => (window.location.href = "/login")}
+            >
+              Login
+            </span>
+          </small>
+        </div>
       </div>
     </div>
   );
