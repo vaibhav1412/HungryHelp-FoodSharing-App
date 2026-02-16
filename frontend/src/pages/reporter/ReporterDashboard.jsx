@@ -7,50 +7,35 @@ function ReporterDashboard() {
 
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [image, setImage] = useState(null);
 
   const handleSubmit = () => {
-    if (!description || !location) {
-      alert("All fields required");
-      return;
-    }
+    if (!description || !location)
+      return alert("All fields required");
 
     addPost({
       id: Date.now(),
       description,
       location,
-      image,
       reporter: user.email,
       donor: null,
       volunteer: null,
-      volunteerRequired: false,
-      completionImage: null,
       status: "OPEN"
     });
 
     setDescription("");
     setLocation("");
-    setImage(null);
+    alert("Request Posted!");
   };
 
   return (
     <div className="container mt-4">
-      <h2>Reporter Section</h2>
+      <h2>Reporter Dashboard</h2>
 
-      <div className="card p-4 shadow-sm">
-
-        <input
-          type="file"
-          className="form-control mb-3"
-          onChange={(e) =>
-            setImage(URL.createObjectURL(e.target.files[0]))
-          }
-        />
-
+      <div className="card p-4 shadow-sm mt-3">
         <input
           type="text"
-          placeholder="Enter Location"
           className="form-control mb-3"
+          placeholder="Enter Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
@@ -68,7 +53,6 @@ function ReporterDashboard() {
         >
           Post Request
         </button>
-
       </div>
     </div>
   );

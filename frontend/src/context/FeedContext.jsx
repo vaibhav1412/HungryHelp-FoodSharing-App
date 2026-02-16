@@ -21,13 +21,6 @@ export const FeedProvider = ({ children }) => {
     localStorage.setItem("points", JSON.stringify(points));
   }, [points]);
 
-  const increasePoints = (email) => {
-    setPoints((prev) => ({
-      ...prev,
-      [email]: (prev[email] || 0) + 10
-    }));
-  };
-
   const addPost = (post) => {
     setPosts((prev) => [...prev, post]);
   };
@@ -51,6 +44,13 @@ export const FeedProvider = ({ children }) => {
     );
   };
 
+  const increasePoints = (email) => {
+    setPoints((prev) => ({
+      ...prev,
+      [email]: (prev[email] || 0) + 10
+    }));
+  };
+
   return (
     <FeedContext.Provider
       value={{ posts, addPost, updatePost, points }}
@@ -59,4 +59,3 @@ export const FeedProvider = ({ children }) => {
     </FeedContext.Provider>
   );
 };
- 
