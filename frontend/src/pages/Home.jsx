@@ -16,7 +16,7 @@ function Home() {
   if (user.activeRole === "volunteer")
     return <VolunteerDashboard />;
 
-  return <h3>Invalid Role</h3>;
+  return null;
 }
 
 export default Home;

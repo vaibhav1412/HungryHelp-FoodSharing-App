@@ -1,39 +1,72 @@
-function Navbar() {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+import { useNavigate } from "react-router-dom";
+
+function Navbar({ user, setUser }) {
+  const navigate = useNavigate();
+
+  if (!user) return null;
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    setUser(null);
+    navigate("/login");
   };
 
   const handleRoleChange = (role) => {
-    const updated = { ...user, activeRole: role };
-    localStorage.setItem("user", JSON.stringify(updated));
-    window.location.reload();
+    const updatedUser = { ...user, activeRole: role };
+
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    navigate("/home");
   };
 
   return (
     <nav className="navbar navbar-dark bg-success px-4">
-      <span className="navbar-brand">HungryHelp</span>
+      <span
+        className="navbar-brand"
+        style={{ cursor: "pointer" }}
+        onClick={() => navigate("/home")}
+      >
+        HungryHelp
+      </span>
 
       <div className="d-flex gap-3 align-items-center">
 
         <select
           className="form-select"
-          style={{ width: "150px" }}
-          value={user?.activeRole}
+          style={{ width: "160px" }}
+          value={user.activeRole}
           onChange={(e) => handleRoleChange(e.target.value)}
         >
-          {user?.roles.map((r) => (
-            <option key={r}>{r}</option>
-          ))}
+          {user.roles && user.roles.length > 0 ? (
+            user.roles.map((r) => (
+              <option key={r} value={r}>
+                {r.toUpperCase()}
+              </option>
+            ))
+          ) : (
+            <option>No Roles</option>
+          )}
         </select>
 
         <button
+          className="btn btn-info btn-sm"
+          onClick={() => navigate("/feed")}
+        >
+          Feed
+        </button>
+        
+        <button
           className="btn btn-light btn-sm"
-          onClick={() => (window.location.href = "/profile")}
+          onClick={() => navigate("/profile")}
         >
           Profile
+        </button>
+
+        <button
+          className="btn btn-warning btn-sm"
+          onClick={() => navigate("/leaderboard")}
+        >
+          Leaderboard
         </button>
 
         <button

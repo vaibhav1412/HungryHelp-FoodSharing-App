@@ -4,13 +4,11 @@ export const FeedContext = createContext();
 
 export const FeedProvider = ({ children }) => {
   const [posts, setPosts] = useState(() => {
-    const saved = localStorage.getItem("posts");
-    return saved ? JSON.parse(saved) : [];
+    return JSON.parse(localStorage.getItem("posts")) || [];
   });
 
   const [points, setPoints] = useState(() => {
-    const saved = localStorage.getItem("points");
-    return saved ? JSON.parse(saved) : {};
+    return JSON.parse(localStorage.getItem("points")) || {};
   });
 
   useEffect(() => {
@@ -22,14 +20,18 @@ export const FeedProvider = ({ children }) => {
   }, [points]);
 
   const addPost = (post) => {
-    setPosts((prev) => [...prev, post]);
+    setPosts((prev) => [post, ...prev]);
   };
 
   const updatePost = (id, updatedData) => {
     setPosts((prev) =>
       prev.map((p) => {
         if (p.id === id) {
-          const updated = { ...p, ...updatedData };
+          const updated = {
+            ...p,
+            ...updatedData,
+            updatedAt: new Date().toISOString()
+          };
 
           if (updatedData.status === "COMPLETED") {
             increasePoints(p.reporter);

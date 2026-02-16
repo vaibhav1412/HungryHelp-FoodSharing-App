@@ -5,54 +5,77 @@ function ReporterDashboard() {
   const { addPost } = useContext(FeedContext);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const [description, setDescription] = useState("");
+  const [desc, setDesc] = useState("");
   const [location, setLocation] = useState("");
+  const [image, setImage] = useState(null);
 
-  const handleSubmit = () => {
-    if (!description || !location)
-      return alert("All fields required");
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => setImage(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  const handlePost = () => {
+    if (!desc || !location)
+      return alert("Fill all fields");
 
     addPost({
       id: Date.now(),
-      description,
-      location,
+      description: desc,
+      locationName: location,
+      image: image,
       reporter: user.email,
       donor: null,
       volunteer: null,
-      status: "OPEN"
+      completionImage: null,
+      volunteerNeeded: false,
+      status: "OPEN",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     });
 
-    setDescription("");
+    setDesc("");
     setLocation("");
-    alert("Request Posted!");
+    setImage(null);
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Reporter Dashboard</h2>
+    <div className="container mt-4" style={{ maxWidth: "650px" }}>
+      <h4>Create Food Request</h4>
 
-      <div className="card p-4 shadow-sm mt-3">
+      <div className="card p-3 shadow-sm">
+
         <input
-          type="text"
-          className="form-control mb-3"
-          placeholder="Enter Location"
+          className="form-control mb-2"
+          placeholder="Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
 
         <textarea
+          className="form-control mb-2"
+          placeholder="Description"
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+        />
+
+        <input
+          type="file"
           className="form-control mb-3"
-          placeholder="Describe food need..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          accept="image/*"
+          onChange={handleImage}
         />
 
         <button
-          className="btn btn-primary"
-          onClick={handleSubmit}
+          className="btn btn-success"
+          onClick={handlePost}
         >
           Post Request
         </button>
+
       </div>
     </div>
   );
